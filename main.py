@@ -60,7 +60,7 @@ delta_T = -alpha/k*np.matmul(G_discrete,q[0:-1,:])
 
 # Plotting the input heat flux and temperature response
 fig, ax = plt.subplots(2,1,figsize=(6, 6))
-ax[0].plot(t_vect,-q*10000)
+ax[0].plot(t_vect,-q/10000)
 ax[0].set(ylabel='Heat Flux (W/cm^2)')
 
 ax[1].plot(t_vect[1:], delta_T)
