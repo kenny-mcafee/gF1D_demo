@@ -9,7 +9,7 @@ inputs = parse_inputs(os.getcwd(),'input.ini')
 N = inputs['N']
 N_time = inputs['N_time']
 L = inputs['L']
-TC_depth = inputs['TC_depth']
+TC_loc = L - inputs['TC_depth']
 k = inputs['k']
 alpha = inputs['alpha']
 delta_t = inputs['delta_t']
@@ -44,11 +44,11 @@ t_mat_quick = np.repeat(np.transpose(t_vect[t_idx[1:]][np.newaxis]),len(time_wei
 time_integrand_mat_quick = np.repeat(time_integrand_mat[:,0][np.newaxis],t_length-1,axis=0)
 
 # Calculating first column of Green's function matrix
-G_discrete_kernel = np.transpose(time_coeff_vect_quick*np.sum(time_weights_vect*G_gal_global_fun(TC_depth,L,t_mat_quick,time_integrand_mat_quick,V,gamma,N,L,k,alpha),axis=1)[np.newaxis])
+G_discrete_kernel = time_coeff_vect_quick*np.sum(time_weights_vect*G_gal_global_fun(TC_loc,L,t_mat_quick,time_integrand_mat_quick,V,gamma,N,L,k,alpha),axis=1)
 
 # Broadcasting first column of Green's function matrix into a Toeplitz matrix structure
 zero_pad = np.zeros(t_length-2)
-G_discrete = sp.linalg.toeplitz(G_discrete_kernel,np.concatenate((G_discrete_kernel[0],zero_pad)))
+G_discrete = sp.linalg.toeplitz(G_discrete_kernel,np.insert(zero_pad,0,G_discrete_kernel[0]))
 
 # read in input heat flux vector and interpolate to the given time vector 
 q = read_q_input(q_inp_fname,t_vect)

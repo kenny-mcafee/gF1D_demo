@@ -1,5 +1,6 @@
 import numpy as np
 import scipy as sp
+from scipy import linalg
 import configparser
 
 def parse_inputs(dir,fname):
@@ -105,13 +106,6 @@ def build_GF(N,L,k,alpha,legendre_general):
     V = np.matmul(np.linalg.inv(R),U)
     gamma = D
 
-    """
-    print(D)
-    print('')
-    print(U)
-    print('')
-    print(V_bar)
-    """
     return(V,gamma)
 
 def read_q_input(fname,t_vect):
